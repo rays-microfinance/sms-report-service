@@ -33,8 +33,11 @@ public class SmsController {
         log.debug("Request phone  : {} limit :{} " , phone , limit );
 
         if(phone.startsWith("0")){
-            String replace = phone.replace("0", "251");
-            phone = replace;
+
+            String substring = phone.substring(1);
+            String formatPhone = "251" + substring;
+            phone = formatPhone;
+
         }
 
         List<Sms> smsResponse = smsService.getMessage(phone, limit);
