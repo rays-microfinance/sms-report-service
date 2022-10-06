@@ -20,9 +20,6 @@ spring:
     database-platform: org.hibernate.dialect.SQLServerDialect
 
     ##LOGGING CONFIG
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 logging:
   file:
