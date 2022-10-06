@@ -1,18 +1,22 @@
 package com.sahay.controller;
 
 
+import com.sahay.dto.SmsDto;
 import com.sahay.entity.Sms;
 import com.sahay.service.SmsService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,7 +29,7 @@ public class SmsController {
 
 
     @GetMapping()
-    public List<Sms> getMessage(
+    public ResponseEntity<?> getMessage(
             @Valid
             @RequestParam("phone") String phone ,
             @Range( message = "limit should be a number")
@@ -42,7 +46,10 @@ public class SmsController {
         }
 
         List<Sms> smsResponse = smsService.getMessage(phone, limit);
+        SmsDto smsDto = new SmsDto();
+        smsDto.setResponse("000");
+        smsDto.setMessage(smsResponse);
         log.debug("Response inside getSms() : {}", smsResponse);
-        return smsResponse;
+        return new ResponseEntity<SmsDto>(smsDto , HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package com.sahay.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,7 @@ public class Sms {
     @JsonIgnore()
     private long id;
     private String message;
-    @JsonIgnore
-    private String phone;
 
-
-
+//    @Transient
+//    private String response = "000";
 }

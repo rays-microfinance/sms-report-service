@@ -4,11 +4,10 @@ package com.sahay.service;
 import com.sahay.entity.Sms;
 import com.sahay.exception.MessageNotFoundException;
 import com.sahay.repository.SmsRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 
@@ -20,9 +19,9 @@ public class SmsService {
     private final SmsRepository smsRepository;
 
 
-    public List<Sms> getMessage(String phone , int limit ) throws Exception{
+    public List<Sms> getMessage(String phone, int limit) throws Exception {
 
-        List<Sms> smsResponse = smsRepository.findTop5ByPhone(phone , limit );
+        List<Sms> smsResponse = smsRepository.findTopMessagesByPhone(phone, limit);
 
         if (smsResponse.isEmpty()) {
             // throw not found exception
@@ -30,7 +29,7 @@ public class SmsService {
             throw new MessageNotFoundException("No messages found or phone number doesnt exist");
         }
 
-         return smsResponse;
+        return smsResponse;
 
     }
 
