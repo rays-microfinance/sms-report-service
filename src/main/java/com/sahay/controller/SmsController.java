@@ -4,6 +4,7 @@ package com.sahay.controller;
 import com.sahay.entity.Sms;
 import com.sahay.service.SmsService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/sms")
 @Slf4j
@@ -30,13 +31,13 @@ public class SmsController {
             @Range( message = "limit should be a number")
             @RequestParam(value = "limit", defaultValue = "5") int limit) throws Exception {
 
-        log.debug("Request phone  : {} limit :{} " , phone , limit );
-
         if(phone.startsWith("0")){
 
             String substring = phone.substring(1);
             String formatPhone = "251" + substring;
-            phone = formatPhone;
+            phone = formatPhone ;
+
+            log.debug("Request phone  : {} limit :{} " , phone , limit );
 
         }
 

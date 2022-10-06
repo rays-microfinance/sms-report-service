@@ -5,20 +5,21 @@ import com.sahay.entity.Sms;
 import com.sahay.exception.MessageNotFoundException;
 import com.sahay.repository.SmsRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@AllArgsConstructor
+
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SmsService {
 
     private final SmsRepository smsRepository;
 
 
-    @Cacheable("Sms")
     public List<Sms> getMessage(String phone , int limit ) throws Exception{
 
         List<Sms> smsResponse = smsRepository.findTop5ByPhone(phone , limit );
