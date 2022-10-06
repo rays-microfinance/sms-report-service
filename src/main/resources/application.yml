@@ -4,14 +4,16 @@ server:
     include-message: always
 
 spring:
+  config:
+    import: file:env.properties
   profiles:
     active: test
   application:
     name: sms-report-service-test
   datasource:
-    username: sms
-    password: Today12345*
-    url: jdbc:sqlserver://196.191.76.123:53500;databaseName=mobile_banking;trustServerCertificate=true;encrypt=true
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: jdbc:sqlserver://${DB_DATABASE}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     show-sql: true
