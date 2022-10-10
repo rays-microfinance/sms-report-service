@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -31,6 +34,17 @@ public class SmsService {
 
         return smsResponse;
 
+    }
+
+    public List<Sms> getTellerMessages(String name , LocalDate startDate , LocalDate endDate ) throws Exception {
+
+        List tellerMessages = smsRepository.findMessagesByTellerName(name ,startDate , endDate);
+
+        if (tellerMessages.isEmpty()) {
+            log.error("Teller with  : {}",name , "not found");
+            throw new MessageNotFoundException("No messages found or invalid teller name");
+        }
+        return tellerMessages;
     }
 
 }
