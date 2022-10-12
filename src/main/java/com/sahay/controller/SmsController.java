@@ -4,7 +4,6 @@ package com.sahay.controller;
 import com.sahay.dto.SmsDto;
 import com.sahay.entity.Sms;
 import com.sahay.service.SmsService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,8 +38,7 @@ public class SmsController {
         if (phone.startsWith("0")) {
 
             String substring = phone.substring(1);
-            String formatPhone = "251" + substring;
-            phone = formatPhone;
+            phone = "251" + substring;
 
             log.debug("Request phone  : {} limit :{} ", phone, limit);
 
@@ -54,27 +49,29 @@ public class SmsController {
         smsDto.setResponse("000");
         smsDto.setMessage(smsResponse);
         log.debug("Response inside getSms() : {}", smsResponse);
-        return new ResponseEntity<SmsDto>(smsDto, HttpStatus.OK);
+        return new ResponseEntity<>(smsDto, HttpStatus.OK);
     }
 
     @GetMapping("/sms-teller")
     public ResponseEntity<?> getTellerMessages(
             @RequestParam("name") String name,
+            @RequestParam("phone") String phone,
             @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     )
             throws Exception {
 
         log.debug("teller name: {}", name);
+        log.debug("phone number: {}", phone);
         log.debug("start date: {}", startDate);
         log.debug("end date: {}", endDate);
 
 
-        List<Sms> smsResponse = smsService.getTellerMessages(name, startDate, endDate);
+        List<Sms> smsResponse = smsService.getTellerMessages(name, phone, startDate, endDate);
         SmsDto smsDto = new SmsDto();
         smsDto.setResponse("000");
         smsDto.setMessage(smsResponse);
         log.debug("Response inside getTellerSms() : {}", smsResponse);
-        return new ResponseEntity<SmsDto>(smsDto, HttpStatus.OK);
+        return new ResponseEntity<>(smsDto, HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -36,9 +37,9 @@ public class SmsService {
 
     }
 
-    public List<Sms> getTellerMessages(String name , LocalDate startDate , LocalDate endDate ) throws Exception {
+    public List<Sms> getTellerMessages(String name , String phone ,  LocalDate startDate , LocalDate endDate  ) throws Exception {
 
-        List tellerMessages = smsRepository.findMessagesByTellerName(name ,startDate , endDate);
+        List tellerMessages = smsRepository.findMessagesByTellerName(name , phone , startDate , endDate );
 
         if (tellerMessages.isEmpty()) {
             log.error("Teller with  : {}",name , "not found");
