@@ -18,5 +18,4 @@ public class SmsDto {
 
     private String response;
     private List<Sms> message;
-    private LocalDateTime requestDate;
 }

@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
@@ -22,7 +19,6 @@ public class SmsService {
 
     private final SmsRepository smsRepository;
 
-
     public List<Sms> getMessage(String phone, int limit) throws Exception {
 
         List<Sms> smsResponse = smsRepository.findTopMessagesByPhone(phone, limit);
@@ -32,7 +28,6 @@ public class SmsService {
             log.error("Error message not found or phone number is not registered : {}", smsResponse);
             throw new MessageNotFoundException("No messages found or phone number doesnt exist");
         }
-
         return smsResponse;
 
     }

@@ -1,19 +1,21 @@
 package com.sahay.controller;
 
 
+import com.sahay.dto.ErrorResponse;
+import com.sahay.dto.LimitRequest;
 import com.sahay.dto.SmsDto;
 import com.sahay.entity.Sms;
+import com.sahay.service.CustomerService;
 import com.sahay.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.hibernate.validator.constraints.Range;
+import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -23,10 +25,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
-public class SmsController {
+public class Controller {
 
     private final SmsService smsService;
 
+    private final CustomerService customerService;
+
+    // TODO: all sms
 
     @GetMapping("/sms")
     public ResponseEntity<?> getMessage(
@@ -52,6 +57,8 @@ public class SmsController {
         return new ResponseEntity<>(smsDto, HttpStatus.OK);
     }
 
+    // TODO: teller sms
+
     @GetMapping("/sms-teller")
     public ResponseEntity<?> getTellerMessages(
             @RequestParam("name") String name,
@@ -65,13 +72,33 @@ public class SmsController {
         log.debug("phone number: {}", phone);
         log.debug("start date: {}", startDate);
         log.debug("end date: {}", endDate);
-
-
         List<Sms> smsResponse = smsService.getTellerMessages(name, phone, startDate, endDate);
-        SmsDto smsDto = new SmsDto();
+
+        if (smsResponse.size() < 0) {
+
+        }
+        var smsDto = new SmsDto();
         smsDto.setResponse("000");
         smsDto.setMessage(smsResponse);
         log.debug("Response inside getTellerSms() : {}", smsResponse);
         return new ResponseEntity<>(smsDto, HttpStatus.OK);
+    }
+
+    // todo : customer limit
+
+    @PostMapping("/customer-limit")
+    public ResponseEntity<?> updateCustomerLimit(@RequestBody() LimitRequest request) {
+        customerService.updateLimit(
+                request.getPhoneNumber(),
+                request.getTranLimitId(),
+                request.getDailyLimitId(),
+                request.getBalanceLimitId()
+        );
+
+        var response = new ErrorResponse();
+        response.setResponse("000");
+        response.setMessage("Customer limit is updated successfully!");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
