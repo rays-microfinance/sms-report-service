@@ -1,9 +1,11 @@
 package com.sahay.controller;
 
 
+import com.sahay.dto.AgentDto;
 import com.sahay.dto.ErrorResponse;
 import com.sahay.dto.LimitRequest;
 import com.sahay.dto.SmsDto;
+import com.sahay.entity.Agent;
 import com.sahay.entity.Sms;
 import com.sahay.service.CustomerService;
 import com.sahay.service.SmsService;
@@ -14,6 +16,7 @@ import org.hibernate.validator.constraints.Range;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,7 +87,41 @@ public class Controller {
         return new ResponseEntity<>(smsDto, HttpStatus.OK);
     }
 
-    // todo : customer limit
+    //todo: get customer limit
+
+    @GetMapping(value = "/customer-limit/{phoneNumber}" , produces = "application/json")
+    public ResponseEntity<?> getCustomerLimit(@PathVariable(value = "phoneNumber") String phoneNumber) {
+
+        var customerLimit = customerService.getCustomerLimit(phoneNumber);
+
+        if (customerLimit == null) {
+            var errorResponse = new ErrorResponse();
+            errorResponse.setResponse("999");
+            errorResponse.setMessage("Customer not found");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+        }
+
+        var limit = new JSONObject(customerLimit);
+
+        System.out.println("limit = " + limit);
+
+        var response = new JSONObject();
+
+        response.put("phoneNumber", limit.getString("phoneNumber"));
+        response.put("tranLimitTypeId", limit.getInt("tranLimitTypeId"));
+
+        response.put("dailyLimitTypeId", limit.getInt("dailyLimitTypeId"));
+        response.put("balLimitTypeId", limit.getInt("balLimitTypeId"));
+        response.put("response", "000");
+
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+
+    }
+
+
+    // todo : update customer limit
 
     @PostMapping("/customer-limit")
     public ResponseEntity<?> updateCustomerLimit(@RequestBody() LimitRequest request) {
@@ -101,4 +138,39 @@ public class Controller {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // TODO: agent info
+
+    @GetMapping("/agent/{code}")
+    public ResponseEntity<?> getAgentInfo(@PathVariable("code") String code) throws Exception {
+
+        Agent agentInfo = customerService.getAgentInfo(code);
+
+
+        if (agentInfo == null) {
+            var errorResponse = new ErrorResponse();
+            errorResponse.setResponse("999");
+            errorResponse.setMessage("Agent not found");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+        }
+
+        var agentResponse = new AgentDto();
+        JSONObject response = new JSONObject(agentInfo);
+
+        System.out.println("response = " + response);
+        agentResponse.setResponse("000");
+        agentResponse.setName(response.getString("name"));
+        agentResponse.setPhoneNumber(response.getString("phoneNumber"));
+        agentResponse.setFloatAccount(response.getString("floatAccount"));
+        agentResponse.setRegion(response.getString("region"));
+        agentResponse.setZone(response.getString("zone"));
+        agentResponse.setDistrict(response.getString("district"));
+        agentResponse.setVillage(response.getString("village"));
+        agentResponse.setCommissionAccount(response.getString("commissionAccount"));
+
+        return new ResponseEntity<>(agentResponse, HttpStatus.OK);
+    }
+
 }

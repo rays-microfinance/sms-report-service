@@ -3,6 +3,8 @@ package com.sahay;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ public class SmsReportServiceApplication {
         SpringApplication.run(SmsReportServiceApplication.class, args);
 
     }
+
 
 
 

@@ -18,6 +18,11 @@ spring:
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+
 
     ##LOGGING CONFIG
 
@@ -33,4 +38,5 @@ logging:
     com.sahay: debug
     org.springframework.web: error
     org.hibernate: error
+
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LimitRequest {
 
+    private String response;
     private String phoneNumber;
     private int tranLimitId;
     private int dailyLimitId;
