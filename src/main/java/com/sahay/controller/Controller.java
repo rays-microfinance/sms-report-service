@@ -99,7 +99,7 @@ public class Controller {
             errorResponse.setResponse("999");
             errorResponse.setMessage("Customer not found");
 
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
         }
 
@@ -152,7 +152,7 @@ public class Controller {
             errorResponse.setResponse("999");
             errorResponse.setMessage("Agent not found");
 
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
         }
 

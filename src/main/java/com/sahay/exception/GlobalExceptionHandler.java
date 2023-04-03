@@ -36,19 +36,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         body.put("errors", errors);
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 
     @ExceptionHandler(MessageNotFoundException.class)
     public ResponseEntity<ErrorResponse> messageNotFoundExceptionHandler(MessageNotFoundException exception, WebRequest request) {
 
-        ErrorResponse errorResponse = new ErrorResponse( "999" , exception.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse("999", exception.getMessage());
 
-        return ResponseEntity.status(404).body(errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
 
 
     }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> constraintValidationExceptionHandler(ConstraintViolationException exception, WebRequest request) {
         List<String> errors = new ArrayList<>();
@@ -58,7 +59,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, List<String>> result = new HashMap<>();
         result.put("errors", errors);
 
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

@@ -68,7 +68,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>sms-report-service-v2</finalName>
+        <finalName>slack-tools-service</finalName>
     </build>
 
 </project>

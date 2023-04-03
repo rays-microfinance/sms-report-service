@@ -3,14 +3,10 @@ package com.sahay.service;
 
 import com.sahay.entity.Agent;
 import com.sahay.entity.Customer;
-import com.sahay.exception.MessageNotFoundException;
 import com.sahay.repository.AgentRepository;
 import com.sahay.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
-import javax.validation.Payload;
 
 @RequiredArgsConstructor
 @Service
