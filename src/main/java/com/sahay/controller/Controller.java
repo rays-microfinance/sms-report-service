@@ -1,10 +1,7 @@
 package com.sahay.controller;
 
 
-import com.sahay.dto.AgentDto;
-import com.sahay.dto.ErrorResponse;
-import com.sahay.dto.LimitRequest;
-import com.sahay.dto.SmsDto;
+import com.sahay.dto.*;
 import com.sahay.entity.Agent;
 import com.sahay.entity.Sms;
 import com.sahay.service.CustomerService;
@@ -49,10 +46,10 @@ public class Controller {
             phone = "251" + substring;
 
             log.debug("Request phone  : {} limit :{} ", phone, limit);
-
         }
 
         List<Sms> smsResponse = smsService.getMessage(phone, limit);
+        log.info("sms : {}" , smsResponse);
         SmsDto smsDto = new SmsDto();
         smsDto.setResponse("000");
         smsDto.setMessage(smsResponse);
@@ -171,6 +168,81 @@ public class Controller {
         agentResponse.setCommissionAccount(response.getString("commissionAccount"));
 
         return new ResponseEntity<>(agentResponse, HttpStatus.OK);
+    }
+
+    // sms for portal
+
+    @GetMapping("/sms/portal")
+    public ResponseEntity<?> getMessagesRange(
+            @Valid
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) throws Exception {
+
+        if (phoneNumber.startsWith("0")) {
+
+            String substring = phoneNumber.substring(1);
+            phoneNumber = "251" + substring;
+
+            log.debug("Request phone  : {} startDate :{} : endDate : {} ", phoneNumber, startDate , endDate);
+
+        }
+
+        List<Sms> smsResponse = smsService.getSmsForPortal(phoneNumber, startDate , endDate);
+        log.info("sms : {}" , smsResponse);
+        SmsDto smsDto = new SmsDto();
+        smsDto.setResponse("000");
+        smsDto.setMessage(smsResponse);
+        log.debug("Response inside getSms() : {}", smsResponse);
+        return new ResponseEntity<>(smsDto, HttpStatus.OK);
+    }
+
+    // statement
+
+    @GetMapping("/statement/old")
+    public ResponseEntity<StatementDto> getOldStatement(
+            @RequestParam String phoneNumber,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        try {
+            StatementDto customerDetails = smsService.getOldAccountStatement(phoneNumber, startDate, endDate);
+
+            log.info("STATEMENT : {}" , customerDetails);
+
+            if (customerDetails != null) {
+                return new ResponseEntity<>(customerDetails, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("ERROR OCCURED : {}" , e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    // new statement
+    @GetMapping("/statement/new")
+    public ResponseEntity<StatementDto> getNewStatement(
+            @RequestParam String phoneNumber,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        try {
+            StatementDto customerDetails = smsService.getNewAccountStatement(phoneNumber, startDate, endDate);
+
+            log.info("STATEMENT : {}" , customerDetails);
+
+            if (customerDetails != null) {
+                return new ResponseEntity<>(customerDetails, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("ERROR OCCURED : {}" , e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

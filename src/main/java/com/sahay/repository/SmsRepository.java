@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface SmsRepository extends JpaRepository<Sms, Long> {
 
+
+
     @Query(value = "SELECT TOP (?2)  [id] ,[phone] , [message] , [request_date]  FROM [mobile_banking].[dbo].[Sms] WHERE phone = ?1 ORDER BY request_date  DESC  ",
             nativeQuery = true)
     List<Sms> findTopMessagesByPhone(String phone, int limit);
@@ -26,6 +28,8 @@ public interface SmsRepository extends JpaRepository<Sms, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
+    // jdbc
 
 }
 

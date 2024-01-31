@@ -23,12 +23,18 @@ public class Transaction {
     private Long id;
     @Column(name = "TransactionId")
     private String transactionId;
+    @Column(name = "TranTypeId")
+    private int tranTypeId;
+    @Column(name = "IsReversed")
+    private int isReversed;
     private String account;
-    private String amount;
+    private int amount;
     private String narration;
     private String channel;
     @Column(name = "TranDate")
-    private LocalDateTime transactionDate;
+    private String tranDate;
+    @Column(name = "TransactionReqType")
+    private String transactionReqType;
 
 
 }

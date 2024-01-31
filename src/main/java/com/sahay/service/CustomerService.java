@@ -24,8 +24,8 @@ public class CustomerService {
         customerRepository.updateCustomerLimit(phone, tranLimitId, dailyLimitId, balanceLimitId);
     }
 
-    public Agent getAgentInfo(String code) throws Exception {
 
+    public Agent getAgentInfo(String code) throws Exception {
         Agent agentByCode = agentRepository.getAgentByCode(code);
 
         return agentByCode;

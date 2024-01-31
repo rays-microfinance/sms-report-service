@@ -44,6 +44,13 @@ server:
   port: 50392
   error:
     include-message: always
+  compression:
+    enabled: false
+
+
+
+slack:
+  web-hook-url: https://hooks.slack.com/services/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
 
 spring:
   profiles:
@@ -51,6 +58,9 @@ spring:
   application:
     name: sms-report-service-prod
   datasource:
+#    url: jdbc:sqlserver://172.16.1.53:53512;databaseName=mobile_banking_prod;encrypt=true;trustServerCertificate=true;andtrustServerCertificate=false
+#    username: sa
+#    password: Today1234
     username: sa
     password: '@R@y5#MFI!!2020_sahay'
     url: jdbc:sqlserver://172.16.1.15:53500;databaseName=mobile_banking;trustServerCertificate=true;encrypt=true
@@ -64,6 +74,16 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  main:
+    allow-circular-references: true
+    lazy-initialization: true
+  jmx:
+    enabled: false
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 20
 
 logging:
   file:
@@ -77,4 +97,3 @@ logging:
     com.sahay: debug
     org.springframework.web: error
     org.hibernate: error
-

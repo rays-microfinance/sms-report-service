@@ -18,12 +18,13 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "Sms")
 public class Sms {
 
     @Id
     @JsonIgnore()
     private long id;
     private String message;
-    private LocalDateTime request_date;
+    private Date date;
 
 }
